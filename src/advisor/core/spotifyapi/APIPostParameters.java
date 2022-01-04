@@ -13,20 +13,22 @@ public class APIPostParameters implements BodyPublishable {
 
     @Override
     public String formatForBodyPublisher() {
-        if(grantType.equals(GrantType.AUTHORIZATION_CODE)) {
-            return String.format("grant_type=%s&code=%s&redirect_uri=%s", grantType.getMessage(), code, redirectURI);
-        }
-        if (grantType.equals(GrantType.REFRESH_TOKEN)) {
-            return String.format("grant_type=%s&refresh_token=%s", grantType, token);
-        }
-        return null;
+        return grantType.equals(GrantType.AUTHORIZATION_CODE) ? getStringForAuthorization() : getStringForRefresh();
+    }
+
+    private String getStringForAuthorization() {
+        return String.format("grant_type=%s&code=%s&redirect_uri=%s", grantType.getMessage(), code, redirectURI);
+    }
+
+    private String getStringForRefresh() {
+        return String.format("grant_type=%s&refresh_token=%s", grantType, token);
     }
 
     public static class Builder {
-        private GrantType grantType;
-        private String code;
-        private String token;
-        private String redirectURI;
+        private GrantType grantType = null;
+        private String code = null;
+        private String token = null;
+        private String redirectURI = null;
 
         public Builder grantType(GrantType grantType) {
             this.grantType = grantType;
@@ -48,13 +50,16 @@ public class APIPostParameters implements BodyPublishable {
             return this;
         }
 
-        public APIPostParameters build() {
-            if (grantType.equals(GrantType.AUTHORIZATION_CODE) && (code.isEmpty() || redirectURI.isEmpty())) {
-                throw new IllegalStateException(String.format("When using %s you need to provide Builder with userCode and redirectURI!", grantType.getMessage()));
+        public APIPostParameters build() throws IllegalStateException {
+            if (grantType == null) {
+                throw new IllegalStateException("Grant type have to be specified!");
+            }
+            if (grantType.equals(GrantType.AUTHORIZATION_CODE) && !validateFieldsForAuthorizationType()) {
+                throw new IllegalStateException(String.format("When using %s you need to provide Builder with a valid userCode and valid redirectURI!", grantType.getMessage()));
             }
 
-            if (grantType.equals(GrantType.REFRESH_TOKEN) && (token.isEmpty())) {
-                throw new IllegalStateException(String.format("When using %s you need to provide Builder with userCode and redirectURI!", grantType.getMessage()));
+            if (grantType.equals(GrantType.REFRESH_TOKEN) && !validateFieldsForRefreshType()) {
+                throw new IllegalStateException(String.format("When using %s you need to provide Builder with a valid userToken!", grantType.getMessage()));
             }
 
             APIPostParameters request = new APIPostParameters();
@@ -64,6 +69,14 @@ public class APIPostParameters implements BodyPublishable {
             request.token = token;
 
             return request;
+        }
+
+        private boolean validateFieldsForAuthorizationType() {
+            return (code != null && redirectURI != null) && (!code.trim().isEmpty() && !redirectURI.trim().isEmpty());
+        }
+
+        private boolean validateFieldsForRefreshType() {
+            return (token != null) && (!token.trim().isEmpty());
         }
 
     }
