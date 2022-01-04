@@ -1,0 +1,5 @@
+/out/
+/build/
+/test/MockTokenServer.java
+/test/MusicAdvisorTest.java
+/test/Server.java
