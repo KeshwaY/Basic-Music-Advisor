@@ -28,8 +28,8 @@ public class TokenManagerImpl implements TokenManager {
     }
 
     @Override
-    public String createTokenForUser(UUID uuid, String code, String redirectURI) throws IOException, InterruptedException {
-        HttpResponse<String> response = authenticator.authorizeUser(code, redirectURI);
+    public String createTokenForUser(UUID uuid, String code) throws IOException, InterruptedException {
+        HttpResponse<String> response = authenticator.authorizeUser(code);
         return getAccessTokenFromResponseAndAddToMap(uuid, response).getToken();
     }
 

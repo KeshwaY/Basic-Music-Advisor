@@ -5,7 +5,7 @@ import java.net.http.HttpResponse;
 
 public interface Authenticator {
 
-    HttpResponse<String> authorizeUser(String code, String redirectURI) throws IOException, InterruptedException;
+    HttpResponse<String> authorizeUser(String code) throws IOException, InterruptedException;
     HttpResponse<String> refreshToken(String token) throws IOException, InterruptedException;
 
 }

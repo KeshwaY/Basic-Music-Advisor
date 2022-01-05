@@ -31,8 +31,8 @@ class AuthenticatorImplTest {
         closeable = MockitoAnnotations.openMocks(this);
         clientId = "123";
         clientSecret = "test";
-        apiEndPoint = "http://localhost:8081";
-        underTest = new AuthenticatorImpl(requestSender, apiEndPoint, clientId, clientSecret);
+        apiEndPoint = "https://accounts.spotify.com/api/token";
+        underTest = new AuthenticatorImpl(requestSender, apiEndPoint, clientId, clientSecret, "http://localhost:8082");
     }
 
     @AfterEach
@@ -44,7 +44,7 @@ class AuthenticatorImplTest {
     void itShouldSendAuthorizationRequest() throws IOException, InterruptedException {
         // given
         String code = "123456789";
-        String redirectURI = "http://localhost:8080";
+        String redirectURI = "http://localhost:8082";
 
         List<String> neededHeaders = List.of(
                 "Content-Type", "application/x-www-form-urlencoded",
@@ -52,7 +52,7 @@ class AuthenticatorImplTest {
         );
 
         // when
-        underTest.authorizeUser(code, redirectURI);
+        underTest.authorizeUser(code);
 
         // then
         verify(requestSender).sendPostRequest(

@@ -42,9 +42,8 @@ class TokenManagerImplTest {
         // given
         UUID uuid = UUID.randomUUID();
         String code = "test";
-        String redirectURI = "http://localhost:8080";
 
-        given(authenticator.authorizeUser(code, redirectURI))
+        given(authenticator.authorizeUser(code))
                 .willReturn(response);
 
 
@@ -57,10 +56,10 @@ class TokenManagerImplTest {
                 "}");
 
         // when
-        String token = underTest.createTokenForUser(uuid, code, redirectURI);
+        String token = underTest.createTokenForUser(uuid, code);
 
         // then
-        verify(authenticator).authorizeUser(code, redirectURI);
+        verify(authenticator).authorizeUser(code);
         assertThat(token).isEqualTo("NgCXRK...MzYjw");
     }
 
@@ -69,9 +68,8 @@ class TokenManagerImplTest {
         // given
         UUID uuid = UUID.randomUUID();
         String code = "test";
-        String redirectURI = "http://localhost:8080";
 
-        given(authenticator.authorizeUser(code, redirectURI))
+        given(authenticator.authorizeUser(code))
                 .willReturn(response);
 
 
@@ -84,7 +82,7 @@ class TokenManagerImplTest {
                 "}");
 
         // when
-        underTest.createTokenForUser(uuid, code, redirectURI);
+        underTest.createTokenForUser(uuid, code);
         String token = underTest.getUserToken(uuid);
 
         // then
@@ -97,7 +95,7 @@ class TokenManagerImplTest {
         UUID uuid = UUID.randomUUID();
         String refreshToken = "NgAagA...Um_SHo";
 
-        given(authenticator.authorizeUser(any(), any()))
+        given(authenticator.authorizeUser(any()))
                 .willReturn(response);
         given(response.body()).willReturn("{\n" +
                 "   \"access_token\": \"NgCXRK...MzYjw\",\n" +
@@ -108,7 +106,7 @@ class TokenManagerImplTest {
                 "}");
 
         // when
-        underTest.createTokenForUser(uuid, any(), any());
+        underTest.createTokenForUser(uuid, any());
         when(authenticator.refreshToken(refreshToken))
                 .thenReturn(response);
         when(response.body())

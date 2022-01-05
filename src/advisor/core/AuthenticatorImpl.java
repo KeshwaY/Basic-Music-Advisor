@@ -19,17 +19,19 @@ public class AuthenticatorImpl implements Authenticator {
     private final URI apiEndPoint;
     private final String clientId;
     private final String clientSecret;
+    private final String redirectURI;
 
-    public AuthenticatorImpl(RequestSender requestSender, String apiEndPoint, String clientId, String clientSecret) {
+    public AuthenticatorImpl(RequestSender requestSender, String apiEndPoint, String clientId, String clientSecret, String redirectURI) {
         this.requestSender = requestSender;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.apiEndPoint = URI.create(apiEndPoint);
         this.encoder = new HeaderAuthorizationEncoder();
+        this.redirectURI = redirectURI;
     }
 
     @Override
-    public HttpResponse<String> authorizeUser(String code, String redirectURI) throws IOException, InterruptedException {
+    public HttpResponse<String> authorizeUser(String code) throws IOException, InterruptedException {
         List<String> headers = prepareHeaders();
         APIPostParameters postParameters = APIPostParameters.builder()
                 .grantType(GrantType.AUTHORIZATION_CODE)
