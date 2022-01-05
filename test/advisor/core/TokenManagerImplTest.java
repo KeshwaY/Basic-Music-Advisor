@@ -122,4 +122,33 @@ class TokenManagerImplTest {
         verify(authenticator).refreshToken(refreshToken);
         assertThat(token).isEqualTo("NgA6ZcYI...ixn8bUQ");
     }
+
+    @Test
+    void itShouldCheckIfTokenForUserExists() throws IOException, InterruptedException {
+        // given
+        UUID uuid = UUID.randomUUID();
+        String code = "test";
+
+        given(authenticator.authorizeUser(code))
+                .willReturn(response);
+
+
+        given(response.body()).willReturn("{\n" +
+                "   \"access_token\": \"NgCXRK...MzYjw\",\n" +
+                "   \"token_type\": \"Bearer\",\n" +
+                "   \"scope\": \"user-read-private user-read-email\",\n" +
+                "   \"expires_in\": 3600,\n" +
+                "   \"refresh_token\": \"NgAagA...Um_SHo\"\n" +
+                "}");
+
+        // when
+        String token = underTest.createTokenForUser(uuid, code);
+        boolean userExists = underTest.isTokenCreatedForUser(uuid);
+
+        // then
+        verify(authenticator).authorizeUser(code);
+        assertThat(token).isEqualTo("NgCXRK...MzYjw");
+        assertThat(userExists)
+                .isEqualTo(true);
+    }
 }

@@ -56,4 +56,8 @@ public class TokenManagerImpl implements TokenManager {
         return token.expirationDate().getTime().before(Calendar.getInstance().getTime());
     }
 
+    @Override
+    public boolean isTokenCreatedForUser(UUID userUUID) {
+        return tokenMap.get(userUUID) != null;
+    }
 }

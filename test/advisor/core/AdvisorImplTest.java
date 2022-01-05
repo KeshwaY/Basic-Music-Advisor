@@ -30,7 +30,6 @@ class AdvisorImplTest {
     void setUp() throws IOException {
         closeable = MockitoAnnotations.openMocks(this);
         underTest = new AdvisorImpl();
-        underTest.initialize(8080, "http://localhost:8081", "testId", "testSecret", "http://localhost:8082");
     }
 
     @AfterEach
@@ -41,6 +40,7 @@ class AdvisorImplTest {
     @Test
     void itShouldCreateToken() throws IOException, InterruptedException {
         // given
+        underTest.initialize(8080, "http://localhost:8081", "testId", "testSecret", "http://localhost:8082");
         UUID uuid = UUID.randomUUID();
         String accessToken = "asd";
         String token = "NgCXRK...MzYjw";
@@ -69,6 +69,38 @@ class AdvisorImplTest {
                 .isEqualTo(tokenManager);
         assertThat(underTest.getServerHandler())
                 .isEqualTo(serverHandler);
+    }
+
+    @Test
+    void itShouldFailCheckingIfUserIsAuthorized() throws IOException, InterruptedException {
+        // given
+        UUID userUUID = UUID.randomUUID();
+        given(tokenManager.isTokenCreatedForUser(userUUID))
+                .willReturn(false);
+
+        // when
+        underTest.setTokenManager(tokenManager);
+        boolean userAuthorized = underTest.isUserAuthorized(userUUID);
+
+        // then
+        assertThat(userAuthorized)
+                .isEqualTo(false);
+    }
+
+    @Test
+    void itShouldCheckingIfUserIsAuthorized() throws IOException, InterruptedException {
+        // given
+        UUID userUUID = UUID.randomUUID();
+        given(tokenManager.isTokenCreatedForUser(userUUID))
+                .willReturn(true);
+
+        // when
+        underTest.setTokenManager(tokenManager);
+        boolean userAuthorized = underTest.isUserAuthorized(userUUID);
+
+        // then
+        assertThat(userAuthorized)
+                .isEqualTo(true);
     }
 
 }

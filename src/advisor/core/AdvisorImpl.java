@@ -44,6 +44,7 @@ public class AdvisorImpl implements Advisor {
         serverHandler.initServerContext();
     }
 
+    @Override
     public String createTokenForUser(UUID uuid) throws IOException, InterruptedException {
         serverHandler.startServer();
         String userCode = serverHandler.getNewUserCode(1L, TimeUnit.MINUTES);
@@ -51,6 +52,11 @@ public class AdvisorImpl implements Advisor {
         String token = tokenManager.createTokenForUser(uuid, userCode);
         serverHandler.stopServer();
         return token;
+    }
+
+    @Override
+    public boolean isUserAuthorized(UUID uuid) {
+        return tokenManager.isTokenCreatedForUser(uuid);
     }
 
 }
