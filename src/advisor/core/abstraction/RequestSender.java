@@ -1,4 +1,4 @@
-package advisor.core;
+package advisor.core.abstraction;
 
 import java.io.IOException;
 import java.net.URI;

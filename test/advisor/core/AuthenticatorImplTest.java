@@ -1,5 +1,6 @@
 package advisor.core;
 
+import advisor.core.abstraction.RequestSender;
 import advisor.core.spotifyapi.APIPostParameters;
 import advisor.core.spotifyapi.GrantType;
 import advisor.core.spotifyapi.HeaderAuthorizationEncoder;

@@ -1,5 +1,7 @@
 package advisor.core;
 
+import advisor.core.abstraction.ClientFactory;
+
 import java.net.http.HttpClient;
 
 public class ClientFactoryImpl implements ClientFactory {

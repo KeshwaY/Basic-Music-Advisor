@@ -1,5 +1,7 @@
 package advisor.core.spotifyapi;
 
+import advisor.core.spotifyapi.abstraction.BodyPublishable;
+
 public class APIPostParameters implements BodyPublishable {
 
     private GrantType grantType;

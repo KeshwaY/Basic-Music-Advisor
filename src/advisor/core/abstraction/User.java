@@ -1,4 +1,4 @@
-package advisor.core;
+package advisor.core.abstraction;
 
 import java.io.Serializable;
 import java.util.UUID;

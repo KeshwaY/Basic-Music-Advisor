@@ -1,4 +1,4 @@
-package advisor.core.spotifyapi;
+package advisor.core.spotifyapi.abstraction;
 
 import com.google.gson.JsonObject;
 

@@ -1,5 +1,6 @@
 package advisor.core.spotifyapi;
 
+import advisor.core.spotifyapi.abstraction.AccessToken;
 import com.google.gson.JsonObject;
 
 import java.util.Calendar;

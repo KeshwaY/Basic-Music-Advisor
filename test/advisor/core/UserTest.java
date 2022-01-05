@@ -1,5 +1,6 @@
 package advisor.core;
 
+import advisor.core.abstraction.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

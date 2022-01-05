@@ -1,4 +1,4 @@
-package advisor.core.spotifyapi;
+package advisor.core.spotifyapi.abstraction;
 
 public interface Encoder {
 

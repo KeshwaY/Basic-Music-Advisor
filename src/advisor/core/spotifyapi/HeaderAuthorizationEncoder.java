@@ -1,5 +1,7 @@
 package advisor.core.spotifyapi;
 
+import advisor.core.spotifyapi.abstraction.Encoder;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 

@@ -1,4 +1,4 @@
-package advisor.core;
+package advisor.core.abstraction;
 
 import com.sun.net.httpserver.HttpServer;
 

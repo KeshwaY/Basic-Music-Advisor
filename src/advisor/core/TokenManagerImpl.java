@@ -1,6 +1,8 @@
 package advisor.core;
 
-import advisor.core.spotifyapi.AccessToken;
+import advisor.core.abstraction.Authenticator;
+import advisor.core.abstraction.TokenManager;
+import advisor.core.spotifyapi.abstraction.AccessToken;
 import advisor.core.spotifyapi.BearerToken;
 import advisor.core.spotifyapi.JsonConverter;
 import com.google.gson.JsonObject;

@@ -1,5 +1,6 @@
 package advisor.core.spotifyapi;
 
+import advisor.core.spotifyapi.abstraction.Encoder;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

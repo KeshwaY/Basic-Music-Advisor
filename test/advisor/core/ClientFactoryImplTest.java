@@ -1,5 +1,6 @@
 package advisor.core;
 
+import advisor.core.abstraction.ClientFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

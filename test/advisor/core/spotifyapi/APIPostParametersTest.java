@@ -1,5 +1,6 @@
 package advisor.core.spotifyapi;
 
+import advisor.core.spotifyapi.abstraction.BodyPublishable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
