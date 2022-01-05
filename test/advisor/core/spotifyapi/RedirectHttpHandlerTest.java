@@ -59,7 +59,7 @@ class RedirectHttpHandlerTest {
         String response = "Authorization code not found. Try again.";
 
         // when
-        when(exchange.getRequestURI()).thenReturn(URI.create("http://localhost:8080?"));
+        when(exchange.getRequestURI()).thenReturn(URI.create("http://localhost:8080?" + query));
         when(exchange.getResponseBody()).thenReturn(new ByteArrayOutputStream());
 
         underTest.handle(exchange);
