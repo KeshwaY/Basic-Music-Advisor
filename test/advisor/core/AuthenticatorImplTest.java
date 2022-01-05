@@ -21,6 +21,7 @@ class AuthenticatorImplTest {
     private AutoCloseable closeable;
 
     private AuthenticatorImpl underTest;
+    private String apiEndPoint;
     private String clientId;
     private String clientSecret;
 
@@ -29,7 +30,8 @@ class AuthenticatorImplTest {
         closeable = MockitoAnnotations.openMocks(this);
         clientId = "123";
         clientSecret = "test";
-        underTest = new AuthenticatorImpl(requestSender, clientId, clientSecret);
+        apiEndPoint = "http://localhost:8081";
+        underTest = new AuthenticatorImpl(requestSender, apiEndPoint, clientId, clientSecret);
     }
 
     @AfterEach
@@ -68,7 +70,6 @@ class AuthenticatorImplTest {
     void itShouldSendRefreshRequest() throws IOException, InterruptedException {
         // given
         String token = "987654321";
-        String redirectURI = "http://localhost:8080";
 
         List<String> neededHeaders = List.of(
                 "Content-Type", "application/x-www-form-urlencoded",

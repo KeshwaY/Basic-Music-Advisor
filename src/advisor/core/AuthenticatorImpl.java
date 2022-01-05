@@ -14,13 +14,15 @@ public class AuthenticatorImpl implements Authenticator {
     private final RequestSender requestSender;
     private final HeaderAuthorizationEncoder encoder;
 
+    private final URI apiEndPoint;
     private final String clientId;
     private final String clientSecret;
 
-    public AuthenticatorImpl(RequestSender requestSender, String clientId, String clientSecret) {
+    public AuthenticatorImpl(RequestSender requestSender, String apiEndPoint, String clientId, String clientSecret) {
         this.requestSender = requestSender;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.apiEndPoint = URI.create(apiEndPoint);
         this.encoder = new HeaderAuthorizationEncoder();
     }
 
@@ -33,7 +35,7 @@ public class AuthenticatorImpl implements Authenticator {
                 .redirectURI(redirectURI)
                 .build();
         return requestSender.sendPostRequest(
-                URI.create("https://accounts.spotify.com/api/token"),
+                apiEndPoint,
                 headers,
                 postParameters.formatForBodyPublisher()
                 );
@@ -47,7 +49,7 @@ public class AuthenticatorImpl implements Authenticator {
                 .tokenToRefresh(token)
                 .build();
         return requestSender.sendPostRequest(
-                URI.create("https://accounts.spotify.com/api/token"),
+                apiEndPoint,
                 headers,
                 postParameters.formatForBodyPublisher()
         );
