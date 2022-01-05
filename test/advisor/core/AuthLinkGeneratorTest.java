@@ -17,7 +17,7 @@ class AuthLinkGeneratorTest {
 
         // then
         assertThat(link)
-                .isEqualTo(String.format("https://accounts.spotify.com/authorize?client_id=%s&redirect_uri=%s", clientId, redirectURI));
+                .isEqualTo(String.format("https://accounts.spotify.com/authorize?client_id=%s&redirect_uri=%s&response_type=code", clientId, redirectURI));
     }
 
 }
