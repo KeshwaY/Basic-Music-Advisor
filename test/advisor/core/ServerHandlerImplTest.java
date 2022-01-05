@@ -97,9 +97,10 @@ class ServerHandlerImplTest {
 
         // when
         underTest.initServerContext();
+        underTest.startServer();
         client.send(request, HttpResponse.BodyHandlers.ofString());
         String userCode = underTest.getNewUserCode(10L, TimeUnit.MINUTES);
-        underTest.startServer();
+        underTest.stopServer();
 
         // then
         assertThat(userCode)

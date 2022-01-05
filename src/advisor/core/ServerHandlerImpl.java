@@ -22,7 +22,6 @@ public class ServerHandlerImpl implements ServerHandler {
     @Override
     public void initServerContext() {
         server.createContext("/", new RedirectHttpHandler((code -> newUserCode = code)));
-        server.start();
     }
 
     @Override
