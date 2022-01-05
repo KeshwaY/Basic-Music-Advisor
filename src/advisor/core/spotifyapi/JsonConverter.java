@@ -1,4 +1,4 @@
-package advisor.core;
+package advisor.core.spotifyapi;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

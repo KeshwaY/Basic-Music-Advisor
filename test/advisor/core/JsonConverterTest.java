@@ -1,5 +1,6 @@
 package advisor.core;
 
+import advisor.core.spotifyapi.JsonConverter;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
