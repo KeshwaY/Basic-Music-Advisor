@@ -1,8 +1,9 @@
 package advisor.core;
 
-import advisor.core.abstraction.Advisor;
+import advisor.core.abstraction.ComponentProvider;
 import advisor.core.abstraction.ServerHandler;
 import advisor.core.abstraction.TokenManager;
+import advisor.core.components.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +24,7 @@ class AdvisorImplTest {
 
     @Mock private ServerHandler serverHandler;
     @Mock private TokenManager tokenManager;
+    @Mock private ComponentProvider componentProvider;
     private AutoCloseable closeable;
 
     private AdvisorImpl underTest;
@@ -102,5 +105,98 @@ class AdvisorImplTest {
         assertThat(userAuthorized)
                 .isEqualTo(true);
     }
+
+    @Test
+    void itShouldGetNewReleases() {
+        // given
+        Artist testArtis = Artist.builder()
+                .withName("TestArtist")
+                .build();
+        Album testAlbum = Album.builder()
+                .withArtist(testArtis)
+                .withTitle("TestAlbum")
+                .build();
+
+        given(componentProvider.getNewReleases())
+                .willReturn(List.of(testAlbum));
+
+        // when
+        underTest.setComponentProvider(componentProvider);
+        List<Album> albums = underTest.getNewReleases();
+
+
+        // then
+        verify(componentProvider).getNewReleases();
+        assertThat(albums)
+                .isEqualTo(List.of(testAlbum));
+    }
+
+    @Test
+    void itShouldGetFeatured() {
+        // given
+        Playlist playlist = Playlist.builder()
+                .withTitle("TestPlaylist")
+                .build();
+
+        given(componentProvider.getFeatured())
+                .willReturn(List.of(playlist));
+
+        // when
+        underTest.setComponentProvider(componentProvider);
+        List<Playlist> featured = underTest.getFeatured();
+
+
+        // then
+        verify(componentProvider).getFeatured();
+        assertThat(featured)
+                .isEqualTo(List.of(playlist));
+    }
+
+    @Test
+    void itShouldGetCategories() {
+        // given
+        Category category = Category.builder()
+                .withName("TestCategory")
+                .build();
+
+        given(componentProvider.getCategories())
+                .willReturn(List.of(category));
+
+        // when
+        underTest.setComponentProvider(componentProvider);
+        List<Category> categories = underTest.getCategories();
+
+
+        // then
+        verify(componentProvider).getCategories();
+        assertThat(categories)
+                .isEqualTo(List.of(category));
+    }
+
+    @Test
+    void itShouldGetPlaylistForCategory() {
+        // given
+        Category category = Category.builder()
+                .withName("TestCategory")
+                .build();
+
+        CategoryPlaylist playlist = CategoryPlaylist.builder()
+                .withCategory(category)
+                .build();
+
+        given(componentProvider.getPlaylistsForCategory(any()))
+                .willReturn(List.of(playlist));
+
+        // when
+        underTest.setComponentProvider(componentProvider);
+        List<CategoryPlaylist> playlists = underTest.getPlaylistsForCategory(any());
+
+
+        // then
+        verify(componentProvider).getPlaylistsForCategory(any());
+        assertThat(playlists)
+                .isEqualTo(List.of(playlist));
+    }
+
 
 }

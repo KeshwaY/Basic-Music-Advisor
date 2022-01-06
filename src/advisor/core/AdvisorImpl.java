@@ -1,7 +1,13 @@
 package advisor.core;
 
 import advisor.core.abstraction.*;
+import advisor.core.components.Album;
+import advisor.core.components.Category;
+import advisor.core.components.CategoryPlaylist;
+import advisor.core.components.Playlist;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +19,7 @@ public class AdvisorImpl implements Advisor {
     private RequestSender sender;
     private TokenManager tokenManager;
     private ServerHandler serverHandler;
+    private ComponentProvider componentProvider;
 
     public AdvisorImpl() {
         this.serverFactory = new ServerFactoryImpl();
@@ -35,11 +42,20 @@ public class AdvisorImpl implements Advisor {
         this.serverHandler = serverHandler;
     }
 
+    public ComponentProvider getComponentProvider() {
+        return componentProvider;
+    }
+
+    public void setComponentProvider(ComponentProvider componentProvider) {
+        this.componentProvider = componentProvider;
+    }
+
     @Override
     public void initialize(int serverPort, String apiEndPoint, String clientId, String clientSecret, String redirectURI) throws IOException {
         sender = new RequestSenderImpl(clientFactory.createClient());
         tokenManager = new TokenManagerImpl(new AuthenticatorImpl(sender, apiEndPoint, clientId, clientSecret, redirectURI));
         serverHandler = new ServerHandlerImpl(serverFactory.createServer(serverPort));
+        componentProvider = new ComponentProviderImpl(sender);
 
         serverHandler.initServerContext();
     }
@@ -59,4 +75,23 @@ public class AdvisorImpl implements Advisor {
         return tokenManager.isTokenCreatedForUser(uuid);
     }
 
+    @Override
+    public List<Album> getNewReleases() {
+       return componentProvider.getNewReleases();
+    }
+
+    @Override
+    public List<Playlist> getFeatured() {
+       return componentProvider.getFeatured();
+    }
+
+    @Override
+    public List<Category> getCategories() {
+       return componentProvider.getCategories();
+    }
+
+    @Override
+    public List<CategoryPlaylist> getPlaylistsForCategory(String categoryName) {
+        return componentProvider.getPlaylistsForCategory(categoryName);
+    }
 }
