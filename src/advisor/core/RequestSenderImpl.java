@@ -24,11 +24,26 @@ public class RequestSenderImpl implements RequestSender {
         );
     }
 
+    @Override
+    public HttpResponse<String> sendGetRequestWithHeaders(URI uri, List<String> headers) throws IOException, InterruptedException {
+        return client.send(
+                createGetRequestWithHeaders(uri, headers), HttpResponse.BodyHandlers.ofString()
+        );
+    }
+
     private HttpRequest createPostRequest(URI uri, List<String> headers, String bodyParameters) {
         return HttpRequest.newBuilder()
                 .uri(uri)
                 .headers(headers.toArray(new String[0]))
                 .POST(HttpRequest.BodyPublishers.ofString(bodyParameters))
+                .build();
+    }
+
+    private HttpRequest createGetRequestWithHeaders(URI uri, List<String> headers) {
+        return HttpRequest.newBuilder()
+                .uri(uri)
+                .headers(headers.toArray(new String[0]))
+                .GET()
                 .build();
     }
 

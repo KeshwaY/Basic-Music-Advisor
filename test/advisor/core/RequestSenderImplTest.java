@@ -76,4 +76,26 @@ class RequestSenderImplTest {
         assertThatThrownBy(() -> underTest.sendPostRequest(uri, headersList, ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void itShouldSendGetAuthorizedRequest() throws IOException, InterruptedException {
+        // given
+        given(client.send(any(), any()))
+                .willReturn(response);
+        URI uri = URI.create("http://localhost:8080");
+        List<String> headersList = List.of(
+                "Authorization", "Bearer 123"
+        );
+
+        // when
+        underTest.sendGetRequestWithHeaders(uri, headersList);
+
+        // then
+        verify(client).send(HttpRequest.newBuilder()
+                        .uri(uri)
+                        .headers(headersList.toArray(new String[0]))
+                        .GET()
+                        .build(),
+                HttpResponse.BodyHandlers.ofString());
+    }
 }
