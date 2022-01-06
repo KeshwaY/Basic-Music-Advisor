@@ -12,7 +12,7 @@ public class CategoryPlaylist extends Playlist {
         return new CategoryPlaylistBuilder();
     }
 
-    static final class CategoryPlaylistBuilder extends Playlist.PlaylistBuilder {
+    public static final class CategoryPlaylistBuilder extends Playlist.PlaylistBuilder {
         private Category category;
 
         public CategoryPlaylistBuilder withCategory(Category category) {

@@ -1,6 +1,7 @@
 package advisor.core.components;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Album implements Serializable {
@@ -22,7 +23,7 @@ public class Album implements Serializable {
 
     public static final class AlbumBuilder {
         private String title;
-        private List<Artist> artists;
+        private List<Artist> artists = new ArrayList<>();
 
         private AlbumBuilder() {
         }
