@@ -1,10 +1,9 @@
 package advisor.core.components;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album implements Serializable {
+public class Album extends AbstractComponent {
 
     private String title;
     private List<Artist> artists;

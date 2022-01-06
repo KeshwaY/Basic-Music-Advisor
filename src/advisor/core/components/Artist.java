@@ -1,8 +1,6 @@
 package advisor.core.components;
 
-import java.io.Serializable;
-
-public class Artist implements Serializable {
+public class Artist extends AbstractComponent {
 
     private String name;
 

@@ -1,6 +1,6 @@
 package advisor.core.components;
 
-public class Playlist {
+public class Playlist extends AbstractComponent {
 
     protected String title;
 

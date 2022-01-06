@@ -1,8 +1,6 @@
 package advisor.core.components;
 
-import java.io.Serializable;
-
-public class Category implements Serializable {
+public class Category extends AbstractComponent {
 
     private String name;
 
