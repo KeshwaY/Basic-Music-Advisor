@@ -3,4 +3,5 @@
 /test/MockTokenServer.java
 /test/MusicAdvisorTest.java
 /test/Server.java
+/test/TempWebServerMock.java
 .DS_Store
