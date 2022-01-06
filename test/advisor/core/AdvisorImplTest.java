@@ -43,7 +43,7 @@ class AdvisorImplTest {
     @Test
     void itShouldCreateToken() throws IOException, InterruptedException {
         // given
-        underTest.initialize(8080, "http://localhost:8081", "testId", "testSecret", "http://localhost:8082");
+        underTest.initialize(8084, "http://localhost:8081", "testId", "testSecret", "http://localhost:8082");
         UUID uuid = UUID.randomUUID();
         String accessToken = "asd";
         String token = "NgCXRK...MzYjw";
