@@ -15,14 +15,22 @@ public class ComponentProviderImpl implements ComponentProvider {
 
     private final RequestSender sender;
     private final String resourceURI;
-    private final JsonConverter jsonConverter;
-    private final JsonComponentConverter componentConverter;
+    private JsonConverter jsonConverter;
+    private JsonComponentConverter componentConverter;
 
     public ComponentProviderImpl(RequestSender sender, String resourceURI) {
         this.jsonConverter = new JsonConverter();
         this.componentConverter = new JsonComponentConverter();
         this.resourceURI = resourceURI;
         this.sender = sender;
+    }
+
+    public void setJsonConverter(JsonConverter jsonConverter) {
+        this.jsonConverter = jsonConverter;
+    }
+
+    public void setComponentConverter(JsonComponentConverter componentConverter) {
+        this.componentConverter = componentConverter;
     }
 
     @Override
