@@ -51,11 +51,11 @@ public class AdvisorImpl implements Advisor {
     }
 
     @Override
-    public void initialize(int serverPort, String apiEndPoint, String clientId, String clientSecret, String redirectURI) throws IOException {
+    public void initialize(int serverPort, String apiEndPoint, String resourceURI, String clientId, String clientSecret, String redirectURI) throws IOException {
         sender = new RequestSenderImpl(clientFactory.createClient());
         tokenManager = new TokenManagerImpl(new AuthenticatorImpl(sender, apiEndPoint, clientId, clientSecret, redirectURI));
         serverHandler = new ServerHandlerImpl(serverFactory.createServer(serverPort));
-        componentProvider = new ComponentProviderImpl(sender);
+        componentProvider = new ComponentProviderImpl(sender, resourceURI);
 
         serverHandler.initServerContext();
     }
@@ -63,8 +63,13 @@ public class AdvisorImpl implements Advisor {
     @Override
     public String createTokenForUser(UUID uuid) throws IOException, InterruptedException {
         serverHandler.startServer();
+        System.out.println("waiting for code...");
         String userCode = serverHandler.getNewUserCode(1L, TimeUnit.MINUTES);
-        System.out.println(userCode);
+        if (userCode == null) {
+            throw new IOException();
+        }
+        System.out.println("code received");
+        System.out.println("making http request for access_token...");
         String token = tokenManager.createTokenForUser(uuid, userCode);
         serverHandler.stopServer();
         return token;
@@ -76,22 +81,26 @@ public class AdvisorImpl implements Advisor {
     }
 
     @Override
-    public List<Album> getNewReleases() {
-       return componentProvider.getNewReleases();
+    public List<Album> getNewReleases(UUID uuid) throws IOException, InterruptedException {
+        String token = tokenManager.getUserToken(uuid);
+        return componentProvider.getNewReleases(token);
     }
 
     @Override
-    public List<Playlist> getFeatured() {
-       return componentProvider.getFeatured();
+    public List<Playlist> getFeatured(UUID uuid) throws IOException, InterruptedException {
+        String token = tokenManager.getUserToken(uuid);
+       return componentProvider.getFeatured(token);
     }
 
     @Override
-    public List<Category> getCategories() {
-       return componentProvider.getCategories();
+    public List<Category> getCategories(UUID uuid) throws IOException, InterruptedException {
+        String token = tokenManager.getUserToken(uuid);
+        return componentProvider.getCategories(token);
     }
 
     @Override
-    public List<CategoryPlaylist> getPlaylistsForCategory(String categoryName) {
-        return componentProvider.getPlaylistsForCategory(categoryName);
+    public List<CategoryPlaylist> getPlaylistsForCategory(UUID uuid, String categoryId) throws IOException, InterruptedException {
+        String token = tokenManager.getUserToken(uuid);
+        return componentProvider.getPlaylistsForCategory(token, categoryId);
     }
 }
