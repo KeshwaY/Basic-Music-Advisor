@@ -2,9 +2,9 @@ package advisor.core;
 
 import advisor.core.abstraction.Authenticator;
 import advisor.core.abstraction.TokenManager;
-import advisor.core.spotifyapi.abstraction.AccessToken;
 import advisor.core.spotifyapi.BearerToken;
 import advisor.core.spotifyapi.JsonConverter;
+import advisor.core.spotifyapi.abstraction.AccessToken;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;

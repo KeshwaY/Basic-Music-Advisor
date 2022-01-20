@@ -3,7 +3,10 @@ package advisor.ui.model;
 import advisor.core.AdvisorUser;
 import advisor.core.abstraction.Advisor;
 import advisor.core.abstraction.User;
-import advisor.core.components.*;
+import advisor.core.components.Album;
+import advisor.core.components.Category;
+import advisor.core.components.CategoryPlaylist;
+import advisor.core.components.Playlist;
 import advisor.ui.UserNotAuthorizedException;
 
 import java.io.IOException;
