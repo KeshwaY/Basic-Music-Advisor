@@ -20,6 +20,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+
+// is compared field by field, excluding
+
 class AdvisorImplTest {
 
     @Mock private ServerHandler serverHandler;
@@ -28,6 +31,8 @@ class AdvisorImplTest {
     private AutoCloseable closeable;
 
     private AdvisorImpl underTest;
+
+    private final String testToken = "123456789";
 
     @BeforeEach
     void setUp() throws IOException {
@@ -43,7 +48,7 @@ class AdvisorImplTest {
     @Test
     void itShouldCreateToken() throws IOException, InterruptedException {
         // given
-        underTest.initialize(8084, "http://localhost:8081", "testId", "testSecret", "http://localhost:8082");
+        underTest.initialize(8084, "http://localhost:8081", "http://localhost:8082", "testId", "testSecret", "http://localhost:8083");
         UUID uuid = UUID.randomUUID();
         String accessToken = "asd";
         String token = "NgCXRK...MzYjw";
@@ -82,7 +87,7 @@ class AdvisorImplTest {
                 .willReturn(false);
 
         // when
-        underTest.setTokenManager(tokenManager);
+        underTest.setTokenManager(tokenManager); // given
         boolean userAuthorized = underTest.isUserAuthorized(userUUID);
 
         // then
@@ -107,7 +112,7 @@ class AdvisorImplTest {
     }
 
     @Test
-    void itShouldGetNewReleases() {
+    void itShouldGetNewReleases() throws IOException, InterruptedException {
         // given
         Artist testArtis = Artist.builder()
                 .withName("TestArtist")
@@ -117,64 +122,71 @@ class AdvisorImplTest {
                 .withTitle("TestAlbum")
                 .build();
 
-        given(componentProvider.getNewReleases())
+        underTest.setComponentProvider(componentProvider);
+        underTest.setTokenManager(tokenManager);
+
+        given(tokenManager.getUserToken(any())).willReturn(testToken);
+        given(componentProvider.getNewReleases(testToken))
                 .willReturn(List.of(testAlbum));
 
+
         // when
-        underTest.setComponentProvider(componentProvider);
-        List<Album> albums = underTest.getNewReleases();
+        List<Album> albums = underTest.getNewReleases(any());
 
 
         // then
-        verify(componentProvider).getNewReleases();
         assertThat(albums)
                 .isEqualTo(List.of(testAlbum));
     }
 
     @Test
-    void itShouldGetFeatured() {
+    void itShouldGetFeatured() throws IOException, InterruptedException {
         // given
         Playlist playlist = Playlist.builder()
                 .withTitle("TestPlaylist")
                 .build();
 
-        given(componentProvider.getFeatured())
+        underTest.setTokenManager(tokenManager);
+        underTest.setComponentProvider(componentProvider);
+
+        given(tokenManager.getUserToken(any())).willReturn(testToken);
+        given(componentProvider.getFeatured(any()))
                 .willReturn(List.of(playlist));
 
         // when
-        underTest.setComponentProvider(componentProvider);
-        List<Playlist> featured = underTest.getFeatured();
+        List<Playlist> featured = underTest.getFeatured(any());
 
 
         // then
-        verify(componentProvider).getFeatured();
         assertThat(featured)
                 .isEqualTo(List.of(playlist));
     }
 
     @Test
-    void itShouldGetCategories() {
+    void itShouldGetCategories() throws IOException, InterruptedException {
         // given
         Category category = Category.builder()
                 .withName("TestCategory")
                 .build();
 
-        given(componentProvider.getCategories())
+        underTest.setTokenManager(tokenManager);
+        underTest.setComponentProvider(componentProvider);
+
+        given(tokenManager.getUserToken(any())).willReturn(testToken);
+        given(componentProvider.getCategories(any()))
                 .willReturn(List.of(category));
 
         // when
-        underTest.setComponentProvider(componentProvider);
-        List<Category> categories = underTest.getCategories();
+        List<Category> categories = underTest.getCategories(any());
 
 
         // then
-        verify(componentProvider).getCategories();
         assertThat(categories)
                 .isEqualTo(List.of(category));
     }
 
     @Test
-    void itShouldGetPlaylistForCategory() {
+    void itShouldGetPlaylistForCategory() throws IOException, InterruptedException {
         // given
         Category category = Category.builder()
                 .withName("TestCategory")
@@ -184,16 +196,18 @@ class AdvisorImplTest {
                 .withCategory(category)
                 .build();
 
-        given(componentProvider.getPlaylistsForCategory(any()))
+        underTest.setTokenManager(tokenManager);
+        underTest.setComponentProvider(componentProvider);
+
+        given(tokenManager.getUserToken(any())).willReturn(testToken);
+        given(componentProvider.getPlaylistsForCategory(any(), any()))
                 .willReturn(List.of(playlist));
 
         // when
-        underTest.setComponentProvider(componentProvider);
-        List<CategoryPlaylist> playlists = underTest.getPlaylistsForCategory(any());
+        List<CategoryPlaylist> playlists = underTest.getPlaylistsForCategory(UUID.randomUUID(), "Test category");
 
 
         // then
-        verify(componentProvider).getPlaylistsForCategory(any());
         assertThat(playlists)
                 .isEqualTo(List.of(playlist));
     }

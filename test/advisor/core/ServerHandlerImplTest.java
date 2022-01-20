@@ -86,11 +86,11 @@ class ServerHandlerImplTest {
     @Test
     void itShouldReturnUserCode() throws IOException, InterruptedException {
         // given
-        underTest = new ServerHandlerImpl(new ServerFactoryImpl().createServer(8080));
+        underTest = new ServerHandlerImpl(new ServerFactoryImpl().createServer(8085));
         String code = "123";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080?code=" + code))
+                .uri(URI.create("http://localhost:8085?code=" + code))
                 .GET()
                 .timeout(Duration.ofSeconds(10))
                 .build();

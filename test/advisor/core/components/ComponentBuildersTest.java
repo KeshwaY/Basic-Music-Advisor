@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.*;
 
 class ComponentBuildersTest {
 
+    // title to final private member
+
     @Test
     void itShouldBuildCategory() {
         // given
@@ -46,6 +48,7 @@ class ComponentBuildersTest {
         String firstArtist = "TestArtist1";
         String secondArtist = "TestArtist2";
         List<Artist> artistList = new ArrayList<>();
+        // list of
         artistList.add(Artist.builder()
                 .withName(firstArtist)
                 .build());
