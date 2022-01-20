@@ -3,9 +3,14 @@ package advisor.core.components;
 public class Category extends AbstractComponent {
 
     private String name;
+    private String id;
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public static CategoryBuilder builder() {
@@ -14,6 +19,7 @@ public class Category extends AbstractComponent {
 
     public static final class CategoryBuilder {
         private String name;
+        private String id;
 
         private CategoryBuilder() {
         }
@@ -27,9 +33,15 @@ public class Category extends AbstractComponent {
             return this;
         }
 
+        public CategoryBuilder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
         public Category build() {
             Category category = new Category();
             category.name = name;
+            category.id = id;
             return category;
         }
     }

@@ -1,5 +1,7 @@
 package advisor.core.components;
 
+import java.net.URL;
+
 public class CategoryPlaylist extends Playlist {
 
     private Category category;
@@ -26,10 +28,16 @@ public class CategoryPlaylist extends Playlist {
         }
 
         @Override
+        public CategoryPlaylistBuilder withURL(URL url) {
+            return (CategoryPlaylistBuilder) super.withURL(url);
+        }
+
+        @Override
         public CategoryPlaylist build() {
             CategoryPlaylist playlist = new CategoryPlaylist();
             playlist.title = this.title;
             playlist.category = category;
+            playlist.url = url;
             return playlist;
         }
     }

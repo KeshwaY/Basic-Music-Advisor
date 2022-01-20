@@ -1,6 +1,8 @@
 package advisor.core.components;
 
-public class Playlist extends AbstractComponent {
+import java.net.URL;
+
+public class Playlist extends AbstractComponentWithURL {
 
     protected String title;
 
@@ -14,6 +16,7 @@ public class Playlist extends AbstractComponent {
 
     public static class PlaylistBuilder {
         protected String title;
+        protected URL url;
 
         protected PlaylistBuilder() {
         }
@@ -27,9 +30,15 @@ public class Playlist extends AbstractComponent {
             return this;
         }
 
+        public PlaylistBuilder withURL(URL url) {
+            this.url = url;
+            return this;
+        }
+
         public Playlist build() {
             Playlist playlist = new Playlist();
             playlist.title = this.title;
+            playlist.url = url;
             return playlist;
         }
     }

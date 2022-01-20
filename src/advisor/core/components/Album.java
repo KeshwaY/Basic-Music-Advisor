@@ -1,9 +1,10 @@
 package advisor.core.components;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album extends AbstractComponent {
+public class Album extends AbstractComponentWithURL {
 
     private String title;
     private List<Artist> artists;
@@ -23,6 +24,7 @@ public class Album extends AbstractComponent {
     public static final class AlbumBuilder {
         private String title;
         private List<Artist> artists = new ArrayList<>();
+        private URL url;
 
         private AlbumBuilder() {
         }
@@ -46,10 +48,16 @@ public class Album extends AbstractComponent {
             return this;
         }
 
+        public AlbumBuilder withURL(URL url) {
+            this.url = url;
+            return this;
+        }
+
         public Album build() {
             Album album = new Album();
             album.title = title;
             album.artists = artists;
+            album.url = url;
             return album;
         }
     }

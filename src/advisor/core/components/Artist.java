@@ -1,6 +1,8 @@
 package advisor.core.components;
 
-public class Artist extends AbstractComponent {
+import java.net.URL;
+
+public class Artist extends AbstractComponentWithURL {
 
     private String name;
 
@@ -14,6 +16,7 @@ public class Artist extends AbstractComponent {
 
     public static final class ArtistBuilder {
         private String name;
+        private URL url;
 
         private ArtistBuilder() {
         }
@@ -27,9 +30,15 @@ public class Artist extends AbstractComponent {
             return this;
         }
 
+        public ArtistBuilder withURL(URL url) {
+            this.url = url;
+            return this;
+        }
+
         public Artist build() {
             Artist artist = new Artist();
             artist.name = name;
+            artist.url = url;
             return artist;
         }
     }
