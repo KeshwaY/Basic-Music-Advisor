@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 // is compared field by field, excluding
@@ -77,6 +78,22 @@ class AdvisorImplTest {
                 .isEqualTo(tokenManager);
         assertThat(underTest.getServerHandler())
                 .isEqualTo(serverHandler);
+    }
+
+    @Test
+    void itShouldFailCreatingToken() {
+        // given
+        UUID uuid = UUID.randomUUID();
+        underTest.setServerHandler(serverHandler);
+        given(serverHandler.getNewUserCode(1L, TimeUnit.MINUTES))
+                .willReturn(null);
+
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.createTokenForUser(uuid)).isInstanceOf(IOException.class);
+        verify(serverHandler)
+                .getNewUserCode(1L, TimeUnit.MINUTES);
+
     }
 
     @Test
@@ -210,6 +227,16 @@ class AdvisorImplTest {
         // then
         assertThat(playlists)
                 .isEqualTo(List.of(playlist));
+    }
+
+    @Test
+    void itShouldSetComponentProvider() {
+        // given
+        // when
+        underTest.setComponentProvider(componentProvider);
+
+        // then
+        assertThat(underTest.getComponentProvider()).isEqualTo(componentProvider);
     }
 
 
