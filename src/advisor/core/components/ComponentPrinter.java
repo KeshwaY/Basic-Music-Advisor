@@ -1,8 +1,9 @@
 package advisor.core.components;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ComponentPrinter {
+public class ComponentPrinter implements Serializable {
 
     public void printAlbums(String title, List<Album> albums) {
         StringBuilder builder = new StringBuilder(title);
@@ -18,6 +19,9 @@ public class ComponentPrinter {
                     ""
             );
             builder.append("]\n");
+            if (album.getUrl() != null) {
+                builder.append(album.getUrl().toString()).append("\n").append("\n");
+            }
         });
         fixLastSpace(builder);
         System.out.println(builder);
@@ -26,9 +30,7 @@ public class ComponentPrinter {
     public void printCategories(String title, List<Category> categories) {
         StringBuilder builder = new StringBuilder(title);
         builder.append("\n");
-        categories.forEach(category -> {
-            builder.append(category.getName()).append("\n");
-        });
+        categories.forEach(category -> builder.append(category.getName()).append("\n"));
         fixLastSpace(builder);
         System.out.println(builder);
     }
@@ -38,6 +40,9 @@ public class ComponentPrinter {
         builder.append("\n");
         playlists.forEach(playlist -> {
             builder.append(playlist.getTitle()).append("\n");
+            if (playlist.getUrl() != null) {
+                builder.append(playlist.getUrl().toString()).append("\n").append("\n");
+            }
         });
         fixLastSpace(builder);
         System.out.println(builder);
