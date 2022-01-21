@@ -76,4 +76,42 @@ class RequestSenderImplTest {
         assertThatThrownBy(() -> underTest.sendPostRequest(uri, headersList, ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void itShouldSendGetRequest() throws IOException, InterruptedException {
+        // given
+        given(client.send(any(), any()))
+                .willReturn(response);
+        URI uri = URI.create("http://localhost:8080");
+        List<String> headersList = List.of(
+                "Content-Type", "application/x-www-form-urlencoded"
+        );
+
+        // when
+        underTest.sendGetRequestWithHeaders(uri, headersList);
+
+        // then
+        verify(client).send(HttpRequest.newBuilder()
+                        .uri(uri)
+                        .headers(headersList.toArray(new String[0]))
+                        .GET()
+                        .build(),
+                HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    void itShouldFailSendingGetRequest() throws IOException, InterruptedException {
+        // given
+        given(client.send(any(), any()))
+                .willReturn(response);
+        URI uri = URI.create("");
+        List<String> headersList = List.of(
+                "test", "test"
+        );
+
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.sendGetRequestWithHeaders(uri, headersList))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
